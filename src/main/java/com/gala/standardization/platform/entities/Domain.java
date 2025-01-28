@@ -1,22 +1,29 @@
 package com.gala.standardization.platform.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "domains")
-@NamedQuery(name="Domain.findByCityId", query="SELECT d FROM Domain d WHERE d.cityId = :cityId")
+@NamedQuery(name="Domain.findByCityId", query="SELECT d FROM Domain d WHERE d.city.cityId = :cityId")
 public class Domain {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private String description;
-    private String cityId;
+    private String domainId;
+
+    @Column(nullable = false, name = "domain_name") // Ensure correct column mapping
+    private String domainName;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+
+    @OneToOne
+    @JoinColumn(name = "standard_protocol_id")
+    private Standard standardProtocol;
+
+    @OneToOne
+    @JoinColumn(name = "algorithm_id")
+    private DataReleaseAlgorithm dataReleaseAlgorithm;
 
     // Default constructor
     public Domain() {
@@ -24,49 +31,63 @@ public class Domain {
     }
 
     // Parameterized constructor
-    public Domain(long id, String name, String description, String cityId) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.cityId = cityId;
+    public Domain(String domainId, String domainName, City city, Standard standardProtocol,
+                  DataReleaseAlgorithm dataReleaseAlgorithm) {
+        this.domainId = domainId;
+        this.domainName = domainName;
+        this.city = city;
+        this.standardProtocol = standardProtocol;
+        this.dataReleaseAlgorithm = dataReleaseAlgorithm;
     }
 
-    // Getter and Setter methods
-    public long getId() {
-        return id;
+    // Getters and Setters
+    public String getDomainId() {
+        return domainId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDomainId(String domainId) {
+        this.domainId = domainId;
     }
 
     public String getDomainName() {
-        return name;
+        return domainName;
     }
 
-    public void setDomainName(String name) {
-        this.name = name;
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
     }
 
-    public String getDescription() {
-        return description;
+    public City getCity() {
+        return city;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public String getCityId() {
-        return cityId;
+        return city != null ? city.getCityId() : null;
     }
 
-    public void setCityId(String cityId) {
-        this.cityId = cityId;
+    public Standard getStandardProtocol() {
+        return standardProtocol;
+    }
+
+    public void setStandardProtocol(Standard standardProtocol) {
+        this.standardProtocol = standardProtocol;
+    }
+
+    public DataReleaseAlgorithm getDataReleaseAlgorithm() {
+        return dataReleaseAlgorithm;
+    }
+
+    public void setDataReleaseAlgorithm(DataReleaseAlgorithm dataReleaseAlgorithm) {
+        this.dataReleaseAlgorithm = dataReleaseAlgorithm;
     }
 
     @Override
     public String toString() {
-        return "Domain [id=" + id + ", DomainName=" + name + ", description=" + description + "]";
+        return "Domain [domainId=" + domainId + ", domainName=" + domainName + ", city=" + city
+                + ", standardProtocol=" + standardProtocol + ", dataReleaseAlgorithm=" + dataReleaseAlgorithm + "]";
     }
 }

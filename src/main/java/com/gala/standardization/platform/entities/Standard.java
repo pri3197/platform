@@ -1,43 +1,47 @@
 package com.gala.standardization.platform.entities;
 
+import java.util.UUID;
+
+import com.gala.Status;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="standard")
 public class Standard {
-private long id;
+ @Id
+ @GeneratedValue
+private UUID standardId;
+
+@Column(nullable = false)
 private String standardName;
+@OneToOne(mappedBy = "standardProtocol")
+private Domain domain;
+@Column(columnDefinition = "TEXT")
 private String description;
 private String version;
-private String status;
-private String category;
-private String scope;
-private String requirements;
-private String guidelines;
+   @Enumerated(EnumType.STRING)  // ✅ Maps ENUM as STRING, fixing the issue!
+    @Column(name = "compliance_level", nullable = false)
+private Status complianceLevel;
 
 // Default constructor
 public Standard() {
     super();
 }
 
-// Parameterized constructor
-public Standard(long id, String standardName, String description, String version, 
-               String status, String category, String scope, String requirements, String guidelines) {
-    super();
-    this.id = id;
-    this.standardName = standardName;
-    this.description = description;
-    this.version = version;
-    this.status = status;
-    this.category = category;
-    this.scope = scope;
-    this.requirements = requirements;
-    this.guidelines = guidelines;
+public UUID getStandardId() {
+    return standardId;
 }
 
-// Getter and Setter methods
-public long getId() {
-    return id;
-}
-
-public void setId(long id) {
-    this.id = id;
+public void setStandardId(UUID standardId) {
+    this.standardId = standardId;
 }
 
 public String getStandardName() {
@@ -46,6 +50,14 @@ public String getStandardName() {
 
 public void setStandardName(String standardName) {
     this.standardName = standardName;
+}
+
+public Domain getDomain() {
+    return domain;
+}
+
+public void setDomain(Domain domain) {
+    this.domain = domain;
 }
 
 public String getDescription() {
@@ -64,57 +76,28 @@ public void setVersion(String version) {
     this.version = version;
 }
 
-public String getStatus() {
-    return status;
+public Status getComplianceLevel() {
+    return complianceLevel;
 }
 
-public void setStatus(String status) {
-    this.status = status;
+public void setComplianceLevel(Status complianceLevel) {
+    this.complianceLevel = complianceLevel;
 }
 
-public String getCategory() {
-    return category;
-}
-
-public void setCategory(String category) {
-    this.category = category;
-}
-
-public String getScope() {
-    return scope;
-}
-
-public void setScope(String scope) {
-    this.scope = scope;
-}
-
-public String getRequirements() {
-    return requirements;
-}
-
-public void setRequirements(String requirements) {
-    this.requirements = requirements;
-}
-
-public String getGuidelines() {
-    return guidelines;
-}
-
-public void setGuidelines(String guidelines) {
-    this.guidelines = guidelines;
+public Standard(UUID standardId, String standardName, Domain domain, String description, String version,
+        Status complianceLevel) {
+    this.standardId = standardId;
+    this.standardName = standardName;
+    this.domain = domain;
+    this.description = description;
+    this.version = version;
+    this.complianceLevel = complianceLevel;
 }
 
 @Override
 public String toString() {
-    return "Standard [id=" + id + 
-           ", standardName=" + standardName + 
-           ", description=" + description +
-           ", version=" + version +
-           ", status=" + status +
-           ", category=" + category +
-           ", scope=" + scope +
-           ", requirements=" + requirements +
-           ", guidelines=" + guidelines + "]";
+    return "Standard [standardId=" + standardId + ", standardName=" + standardName + ", domain=" + domain
+            + ", description=" + description + ", version=" + version + ", complianceLevel=" + complianceLevel + "]";
 }
 
 }
