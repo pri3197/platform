@@ -69,4 +69,10 @@ INSERT INTO domains (domain_id, domain_name, city_id, standard_protocol_id, algo
     ('D004', 'Public Safety', 'PAR', '550e8400-e29b-41d4-a716-446655440005', '660e8400-e29b-41d4-a716-446655440005'),
     ('D005', 'Energy', 'NYC', '550e8400-e29b-41d4-a716-446655440001', '660e8400-e29b-41d4-a716-446655440004');
 
+CREATE TABLE users (
+    user_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    pass_word VARCHAR(255) NOT NULL,
+    city_id VARCHAR(255) NOT NULL REFERENCES cities(city_id) ON DELETE CASCADE);
+
+   ALTER TABLE USERS ADD COLUMN user_name  VARCHAR(255) NOT NULL UNIQUE;
 SELECT * FROM domains;
