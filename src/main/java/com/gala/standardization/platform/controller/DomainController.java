@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gala.standardization.platform.entities.Domain;
@@ -17,6 +18,7 @@ import com.gala.standardization.platform.service.DomainService;
 import com.gala.standardization.platform.service.DomainServiceImpl;
 
 @RestController
+@RequestMapping("/domain")
 public class DomainController {
     @Autowired
     private DomainServiceImpl domainService;

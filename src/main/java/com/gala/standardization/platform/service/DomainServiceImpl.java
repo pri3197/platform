@@ -2,6 +2,7 @@ package com.gala.standardization.platform.service;
 
 
 
+import java.io.Console;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,9 +63,21 @@ public class DomainServiceImpl  {
 
         // Get a domain by ID
     public DomainDTO getDomainById(String domainId) {
-        Domain domain = domainRepository.findById(domainId)
+        
+            return domainRepository.findById(domainId)
+                .map(domain -> convertToDTO(domain)) // Convert Domain to DomainDTO
                 .orElseThrow(() -> new RuntimeException("Domain not found"));
-        return domainMapper.toDTO(domain);
+        }
+        
+        // Example conversion method
+        private DomainDTO convertToDTO(Domain domain) {
+            return new DomainDTO( 
+            domain.getDomainId(),
+            domain.getDomainName(),
+            domain.getCity().getCityId(), // Assuming CityDTO isn't required, else convert it
+            domain.getStandardProtocol().getStandardId(), // Assuming a simple reference
+            domain.getDataReleaseAlgorithm().getAlgoId());
+        
     }
 
     // Get all domains for a city

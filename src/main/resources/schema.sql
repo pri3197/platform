@@ -75,4 +75,16 @@ CREATE TABLE users (
     city_id VARCHAR(255) NOT NULL REFERENCES cities(city_id) ON DELETE CASCADE);
 
    ALTER TABLE USERS ADD COLUMN user_name  VARCHAR(255) NOT NULL UNIQUE;
+
+   Select * from cities;
+   ALTER TABLE USERS ADD COLUMN userStatus VARCHAR(255) NOT NULL;
+    ALTER TABLE USERS ADD COLUMN userRole VARCHAR(255) NOT NULL; 
+
+    
+INSERT INTO users (user_id, pass_word, city_id, user_name, userStatus, userRole)
+VALUES (gen_random_uuid(), 'secure123', 'NYC', 'John Doe', 'APPROVED', 'ROLE_ADMIN');
+
+ALTER TABLE users
+RENAME COLUMN userStatus TO user_status;
+
 SELECT * FROM domains;

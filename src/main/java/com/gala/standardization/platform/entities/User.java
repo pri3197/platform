@@ -4,6 +4,9 @@ package com.gala.standardization.platform.entities;
 import jakarta.persistence.*;
 import java.util.UUID;
 
+import com.gala.standardization.platform.Role;
+import com.gala.standardization.platform.UserStatus;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,13 +25,24 @@ public class User {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="role",nullable = false)
+    private Role role; 
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="user_status",nullable = false)
+    private UserStatus status;
+
     public User() {
+        this.status = UserStatus.PROCESSING;
     }
 
-    public User(String username, String password, City city) {
+    public User(String username, String password, Role role, City city) {
         this.username = username;
         this.password = password;
         this.city=city;
+        this.role=role;
+        this.status = UserStatus.PROCESSING;
     }
 
     // Getters and Setters
@@ -67,4 +81,24 @@ public class User {
     public String getCityId() {
         return city != null ? city.getCityId() : null;
     }
+
+    
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+  
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    
 }

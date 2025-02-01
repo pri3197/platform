@@ -52,8 +52,7 @@ public class City {
     }
     @Override
     public String toString() {
-        return "City [cityId=" + cityId + ", city_name=" + city_name + ", createdAt=" + createdAt + ", domains="
-                + domains + "]";
+        return "City [cityId=" + cityId + ", city_name=" + city_name + ", createdAt=" + createdAt +"]";
     }
 
     
