@@ -80,6 +80,9 @@ CREATE TABLE users (
    ALTER TABLE USERS ADD COLUMN userStatus VARCHAR(255) NOT NULL;
     ALTER TABLE USERS ADD COLUMN userRole VARCHAR(255) NOT NULL; 
 
+  UPDATE users 
+SET role = 'ROLE_ADMIN' 
+WHERE role = 'ROLE_USER';
     
 INSERT INTO users (user_id, pass_word, city_id, user_name, userStatus, userRole)
 VALUES (gen_random_uuid(), 'secure123', 'NYC', 'John Doe', 'APPROVED', 'ROLE_ADMIN');
@@ -87,4 +90,4 @@ VALUES (gen_random_uuid(), 'secure123', 'NYC', 'John Doe', 'APPROVED', 'ROLE_ADM
 ALTER TABLE users
 RENAME COLUMN userStatus TO user_status;
 
-SELECT * FROM domains;
+SELECT * FROM users;

@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.gala.standardization.platform.Role;
 import com.gala.standardization.platform.UserStatus;
-import com.gala.standardization.platform.authentication.UserAuthenticator;
-import com.gala.standardization.platform.entities.City;
+
 import com.gala.standardization.platform.entities.User;
 import com.gala.standardization.platform.repository.UserDTO;
 import com.gala.standardization.platform.repository.UserRepository;
 
-import org.hibernate.Hibernate;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
  @Service
 public class UserService {
@@ -29,18 +28,18 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-       // User userSaved = new User(user.getUsername(),user.getPassword(),user.getCityId(),user.getRole(),user.getStatus());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public boolean authenticateUser(String username, String rawPassword) {
         User user = userRepository.findByUsername(username)
-                                  .orElseThrow(() -> new RuntimeException("User not found"));
-        return rawPassword.matches( user.getPassword());
+                                  .orElseThrow(() -> new RuntimeException("Authentication fail : User not found"));
+        return passwordEncoder.matches(rawPassword, user.getPassword());
     }
     public User findByUsername(String username){
         User user=userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new RuntimeException("User Search fail : User not found"));
         return user;
     }
 
@@ -64,6 +63,7 @@ public class UserService {
         user.setStatus(UserStatus.REJECTED);
         userRepository.save(user);
     }
+
 
     // public boolean authenticateUser(String username, String password) {
     //     return authenticator.authenticate(username, password);
